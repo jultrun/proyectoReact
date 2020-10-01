@@ -1,0 +1,16 @@
+{
+  "name": "proyecto-react",
+  "version": "1.0.0",
+  "description": "plataforma de administración de productos",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "author": "julian andres ortega",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
