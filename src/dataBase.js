@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const URI = 'mongodb://localhost/test';
+const URI = 'mongodb://localhost/proyectoreact';
 
 
 mongoose.connect(URI, {useUnifiedTopology: true,useNewUrlParser:true})
