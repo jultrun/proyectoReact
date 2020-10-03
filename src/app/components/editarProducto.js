@@ -10,6 +10,7 @@ class EditarProducto extends Component {
             const res = axios.get(`/api/productos/${this.props.match.params.id}`);
             res.then(function (response) {
                 this.setState({
+                    id: response.data._id,
                     nombre: response.data.nombre,
                     precio: response.data.precio,
                 });
@@ -38,13 +39,14 @@ class EditarProducto extends Component {
       }
     onSubmit (e)  {
         e.preventDefault();
-        axios.post('/api/productos', {
+        axios.put(`/api/productos/${this.state.id}`, {
             nombre: this.state.nombre,
             precio: this.state.precio,
             stock:0
         }).then(()=>{
             this.setState({ redirect: "/" });
-        });
+        }).catch((error)=>{
+        })
         
     }
     onChange (e) {
@@ -70,7 +72,7 @@ class EditarProducto extends Component {
                     <label>precio</label>
                     <input type="number" value={this.state.precio} onChange={this.onChange} className="form-control" name="precio" placeholder="ingrese el precio del producto"></input>
                 </div>
-                <button type="submit">Crear</button> 
+                <button type="submit">Editar</button> 
             </form>
         )
      }
