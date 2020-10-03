@@ -21,7 +21,8 @@ export default class CrearProducto extends Component {
             stock:0
         }).then(()=>{
             this.setState({ redirect: "/" });
-        });
+        }).catch((error)=>{
+        })
         
     }
     onChange (e) {
