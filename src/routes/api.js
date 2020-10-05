@@ -16,7 +16,7 @@ router.get('/productos',authenticated, async (req, res) => {
 
 router.post('/productos',authenticated, async (req, res) => {
     const { nombre, precio, stock,usuario } = req.body;
-    const producto = new Producto({nombre, precio, stock,creador:usuario});
+    const producto = new Producto({nombre, precio, stock,creador:req.usuario});
     await producto.save(function(err, resp) {
         if (err) return res.status(500).json(err);
         res.json({status: 'guardado'});
@@ -60,13 +60,11 @@ router.put('/productos/:id',authenticated, async (req, res) => {
     })
 });
 router.delete('/productos/:id', async (req, res) => {
-    const newProducto = { nombre, precio, stock } = req.body;
     await Producto.findByIdAndDelete(req.params.id,function(err, user) {
         if (err) return res.status(500).json(err);
         res.json({status: 'borrado'});
     }).catch((error)=>{
     })
-    //res.json({status: 'actualizado'});
 });
 
 router.post('/register', async (req, res) => {
