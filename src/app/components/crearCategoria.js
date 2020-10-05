@@ -10,6 +10,7 @@ export default class CrearCategoria extends Component {
             redirect: null,
             nombre : '',
             descripcion : '',
+            errors:[]
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -23,8 +24,10 @@ export default class CrearCategoria extends Component {
         { headers: { "auth-token":  localStorage.getItem("auth-token")  } }).then(()=>{
             this.setState({ redirect: "/" });
         }).catch((error)=>{
-        })
-        
+            this.setState({
+                errors: error.response.data.errors,
+            });
+        });
     }
     onChange (e) {
         const {name,value} = e.target;
@@ -38,7 +41,20 @@ export default class CrearCategoria extends Component {
         }
         return (
             <form onSubmit={this.onSubmit}>
-                <h3>Crear categoria</h3>
+            {this.state.errors.length>0 &&(
+                <div className="alert alert-danger">
+                    <ul>
+                    {
+                    this.state.errors.map(error => {
+                        return(
+                            <li key={error}>{error}</li>
+                        )
+                    })
+                    }
+                    </ul>
+                </div>
+            )}
+                <h3>Crear categoría</h3>
                 <div className="form-group">
                     <label>Nombre</label>
                     <input type="text" onChange={this.onChange} className="form-control" name="nombre" placeholder="ingrese el nombre del producto"></input>

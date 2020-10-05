@@ -26,6 +26,11 @@ router.post('/register', async (req, res) => {
     if(!password){
         errors.push('la contraseña es obligatoria');
     }
+    if(password){
+        if(password!=passwordCheck){
+            errors.push('la contraseñas no coinciden');
+        }
+    }
     if(errors.length>0){
         return res.status(400).json({ errors });
     }
@@ -54,7 +59,9 @@ router.post('/login', async (req, res) => {
     if(!password){
         errors.push('la contraseña es obligatoria');
     }
-
+    if(errors.length>0){
+        return res.status(400).json({ errors });
+    }
     const usuario = await Usuario.findOne({ email: email });
     if (!usuario)
       return res.status(400).json({ msg: "la cuenta no existe" });
@@ -88,6 +95,25 @@ router.get('/productos',authenticated, async (req, res) => {
 
 router.post('/productos',authenticated, async (req, res) => {
     const { nombre, precio, stock,categoria } = req.body;
+    const errors= new Array();
+    if(!nombre){
+        errors.push('el nombre es obligatorio');
+    }
+    if(!precio){
+        errors.push('el precio es obligatorio');
+        if(!validator.isNumeric(precio)){
+            errors.push('el precio debe ser numérico');
+        }
+    }
+    if(!stock){
+        errors.push('la cantidad en stock es obligatoria');
+        if(!validator.isNumeric(stock)){
+            errors.push('la cantidad en stock debe ser numérica');
+        }
+    }
+    if(errors.length>0){
+        return res.status(400).json({ errors });
+    }
     const producto = new Producto({nombre, precio, stock,creador:req.usuario,categoria});
     await producto.save(function(err, resp) {
         if (err) return res.status(500).json(err);
@@ -124,6 +150,25 @@ router.put('/productos/:id',authenticated, async (req, res) => {
         return res.status(404).json('no encontrado');
     }
     const newProducto = { nombre, precio, stock,categoria} = req.body;
+    const errors= new Array();
+    if(!nombre){
+        errors.push('el nombre es obligatorio');
+    }
+    if(!precio){
+        errors.push('el precio es obligatorio');
+        if(!validator.isNumeric(precio)){
+            errors.push('el precio debe ser numérico');
+        }
+    }
+    if(!stock){
+        errors.push('la cantidad en stock es obligatoria');
+        if(!validator.isNumeric(stock)){
+            errors.push('la cantidad en stock debe ser numérica');
+        }
+    }
+    if(errors.length>0){
+        return res.status(400).json({ errors });
+    }
     await Producto.findByIdAndUpdate(req.params.id, newProducto, {runValidators: true},function(err, resp) {
         if (err) return res.status(500).json(err);
         return res.json({status: 'editado'});
@@ -150,6 +195,16 @@ router.get('/categorias',authenticated, async (req, res) => {
 
 router.post('/categorias',authenticated, async (req, res) => {
     const { nombre, descripcion} = req.body;
+    const errors = new Array();
+    if(!nombre){
+        errors.push('el nombre es obligatorio');
+    }
+    if(!descripcion){
+        errors.push('la descripcion es obligatoria');
+    }
+    if(errors.length>0){
+        return res.status(400).json({ errors });
+    }
     const categoria = new Categoria({nombre,descripcion,creador:req.usuario});
     await categoria.save(function(err, resp) {
         if (err) return res.status(500).json(err);
@@ -184,6 +239,16 @@ router.put('/categorias/:id',authenticated, async (req, res) => {
         return res.status(404).json('no encontrada2');
     }
     const newCategoria = { nombre, descripcion } = req.body;
+    const errors = new Array();
+    if(!nombre){
+        errors.push('el nombre es obligatorio');
+    }
+    if(!descripcion){
+        errors.push('la descripcion es obligatoria');
+    }
+    if(errors.length>0){
+        return res.status(400).json({ errors });
+    }
     await Categoria.findByIdAndUpdate(req.params.id, newCategoria, {runValidators: true},function(err, resp) {
         if (err) return res.status(500).json(err);
         return res.json({status: 'editado'});

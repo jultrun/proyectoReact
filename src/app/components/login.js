@@ -11,13 +11,13 @@ class Login extends Component {
             redirect: null,
             email : '',
             password : '',
+            errors:[]
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
       }
     onSubmit (e)  {
       e.preventDefault();
-      
       axios.post(`/api/login`, {
         email: this.state.email,
         password: this.state.password,
@@ -31,9 +31,10 @@ class Login extends Component {
         this.props.history.push('../');
       }.bind(this))
       .catch((error)=>{
-        console.log(error)
-      })
-        
+        this.setState({
+          errors: error.response.data.errors,
+        });
+      });
     }
     onChange (e) {
         const {name,value} = e.target;
@@ -42,12 +43,24 @@ class Login extends Component {
         })
     }
     render() {
-      
         if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />
         }
         return (
             <form onSubmit={this.onSubmit}>
+            {this.state.errors.length>0 &&(
+                <div className="alert alert-danger">
+                    <ul>
+                    {
+                    this.state.errors.map(error => {
+                        return(
+                            <li key={error}>{error}</li>
+                        )
+                    })
+                    }
+                    </ul>
+                </div>
+            )}
                 <h3>Login</h3>
                 <div className="form-group">
                     <label>Email</label>

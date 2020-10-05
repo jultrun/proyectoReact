@@ -25,7 +25,8 @@ class EditarCategoria extends Component {
             redirect: null,
             nombre : '',
             descripcion : '',
-            id: ''
+            id: '',
+            errors:[]
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -41,8 +42,10 @@ class EditarCategoria extends Component {
         ).then(()=>{
             this.setState({ redirect: "/" });
         }).catch((error)=>{
-        })
-        
+            this.setState({
+                errors: error.response.data.errors,
+            });
+        });
     }
     onChange (e) {
         const {name,value} = e.target;
@@ -51,13 +54,24 @@ class EditarCategoria extends Component {
         })
     }
     render() {
-        
         if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />
         }
         return (
             <form onSubmit={this.onSubmit}>
-            
+            {this.state.errors.length>0 &&(
+                <div className="alert alert-danger">
+                    <ul>
+                    {
+                    this.state.errors.map(error => {
+                        return(
+                            <li key={error}>{error}</li>
+                        )
+                    })
+                    }
+                    </ul>
+                </div>
+            )}
                 <h3>Editar categoria</h3>
                 <div className="form-group">
                     <label>Nombre</label>

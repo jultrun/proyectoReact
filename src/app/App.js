@@ -89,12 +89,14 @@ function Nav({ children, ...rest }) {
                   <Link className="nav-link" to="/login">Iniciar session</Link>
               </li></>
           ):<>
-          <li className="nav-item">
-                  <span className="nav-link" onClick={logout}>salir</span>
-              </li>
+          
               <li className="nav-item">
                   <span className="nav-link" to="/login">{usuario.nombre}</span>
-              </li></>
+              </li>
+              <li className="nav-item">
+                  <span className="nav-link" onClick={logout}>salir</span>
+              </li>
+              </>
           }              
           </ul>
       </div>

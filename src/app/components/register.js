@@ -13,25 +13,26 @@ class Register extends Component {
             password : '',
             nombre : '',
             passwordCheck : '',
+            errors:[]
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
       }
     onSubmit (e)  {
       e.preventDefault();
-      
       axios.post(`/api/register`, {
         email: this.state.email,
         password: this.state.password,
         nombre: this.state.nombre,
         passwordCheck: this.state.passwordCheck,
       }).then(function (res) {
-        
         this.props.history.push('/login');
       }.bind(this))
       .catch((error)=>{
+        this.setState({
+            errors: error.response.data.errors,
+        });
       });
-        
     }
     onChange (e) {
         const {name,value} = e.target;
@@ -46,6 +47,19 @@ class Register extends Component {
         }
         return (
             <form onSubmit={this.onSubmit}>
+            {this.state.errors.length>0 &&(
+                <div className="alert alert-danger">
+                    <ul>
+                    {
+                    this.state.errors.map(error => {
+                        return(
+                            <li key={error}>{error}</li>
+                        )
+                    })
+                    }
+                    </ul>
+                </div>
+            )}
                 <h3>Registro</h3>
                 <div className="form-group">
                     <label>Email</label>

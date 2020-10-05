@@ -10,8 +10,10 @@ export default class CrearProducto extends Component {
             redirect: null,
             nombre : '',
             precio : '',
+            stock : '',
             categoria : null,
-            categorias:[]
+            categorias:[],
+            errors:[]
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -23,8 +25,7 @@ export default class CrearProducto extends Component {
                 categorias: response.data,
             });
         }.bind(this))
-        .catch(function (error) {
-        }
+        .catch(function (error) {}
         );
 }
     onSubmit (e)  {
@@ -32,12 +33,15 @@ export default class CrearProducto extends Component {
         axios.post('/api/productos', {
             nombre: this.state.nombre,
             precio: this.state.precio,
-            stock:0,
+            stock: this.state.stock,
             categoria:this.state.categoria,
         },
         { headers: { "auth-token":  localStorage.getItem("auth-token")  } }).then(()=>{
             this.setState({ redirect: "/" });
         }).catch((error)=>{
+            this.setState({
+                errors: error.response.data.errors,
+            });
         })
         
     }
@@ -53,14 +57,31 @@ export default class CrearProducto extends Component {
         }
         return (
             <form onSubmit={this.onSubmit}>
+            {this.state.errors.length>0 &&(
+                <div className="alert alert-danger">
+                    <ul>
+                    {
+                    this.state.errors.map(error => {
+                        return(
+                            <li key={error}>{error}</li>
+                        )
+                    })
+                    }
+                    </ul>
+                </div>
+            )}
                 <h3>Crear producto</h3>
                 <div className="form-group">
                     <label>Nombre</label>
                     <input type="text" onChange={this.onChange} className="form-control" name="nombre" placeholder="ingrese el nombre del producto"></input>
                 </div>
                 <div className="form-group">
-                    <label>precio</label>
+                    <label>Precio</label>
                     <input type="number" onChange={this.onChange} className="form-control" name="precio" placeholder="ingrese el precio del producto"></input>
+                </div>
+                <div className="form-group">
+                    <label>Cantidad en stock</label>
+                    <input type="number" onChange={this.onChange} className="form-control" name="stock" placeholder="ingrese la cantidad de producto en stock"></input>
                 </div>
                 <div className="form-group">
                     <label>Categoria</label>
@@ -73,7 +94,6 @@ export default class CrearProducto extends Component {
                             )
                         })
                         }
-                        
                     </select>
                 </div>
                 <button type="submit">Crear</button> 

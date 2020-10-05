@@ -12,33 +12,33 @@ class EditarProducto extends Component {
                     id: response.data._id,
                     nombre: response.data.nombre,
                     precio: response.data.precio,
+                    stock: response.data.stock,
                     categoria: response.data.categoria
                 });
               }.bind(this))
               .catch(function (error) {
                 this.setState({ redirect: "../" });
               }.bind(this));
-
-              const resc = axios.get(`/api/categorias`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } });
-        resc.then(function (response) {
-            this.setState({
-                categorias: response.data,
-            });
-        }.bind(this))
-        .catch(function (error) {
-        }
-        );
+            const resc = axios.get(`/api/categorias`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } });
+            resc.then(function (response) {
+                this.setState({
+                    categorias: response.data,
+                });
+            }.bind(this))
+            .catch(function (error) {}
+            );
         }
     }
     constructor() {
         super();
-       
         this.state = {
             redirect: null,
             nombre : '',
             precio : '',
+            stock: '',
             categoria : null,
-            categorias:[]
+            categorias:[],
+            errors:[]
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -49,20 +49,22 @@ class EditarProducto extends Component {
         axios.put(`/api/productos/${this.state.id}`, {
             nombre: this.state.nombre,
             precio: this.state.precio,
-            stock:0,
+            stock: this.state.stock,
             categoria: this.state.categoria
         },{ headers: { "auth-token":  localStorage.getItem("auth-token")  } }
         ).then(()=>{
             this.setState({ redirect: "/" });
         }).catch((error)=>{
+            this.setState({
+                errors: error.response.data.errors,
+            });
         })
-        
     }
     onChange (e) {
         const {name,value} = e.target;
         this.setState({
             [name]:value
-        })
+        });
     }
     render() {
         
@@ -71,7 +73,19 @@ class EditarProducto extends Component {
         }
         return (
             <form onSubmit={this.onSubmit}>
-            
+            {this.state.errors.length>0 &&(
+                <div className="alert alert-danger">
+                    <ul>
+                    {
+                    this.state.errors.map(error => {
+                        return(
+                            <li key={error}>{error}</li>
+                        )
+                    })
+                    }
+                    </ul>
+                </div>
+            )}
                 <h3>Editar producto</h3>
                 <div className="form-group">
                     <label>Nombre</label>
@@ -80,6 +94,10 @@ class EditarProducto extends Component {
                 <div className="form-group">
                     <label>precio</label>
                     <input type="number" value={this.state.precio} onChange={this.onChange} className="form-control" name="precio" placeholder="ingrese el precio del producto"></input>
+                </div>
+                <div className="form-group">
+                    <label>Cantidad en stock</label>
+                    <input type="number" value={this.state.stock} onChange={this.onChange} className="form-control" name="stock" placeholder="ingrese la cantidad de producto en stock"></input>
                 </div>
                 <div className="form-group">
                     <label>Categoria</label>
