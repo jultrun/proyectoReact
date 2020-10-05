@@ -64,11 +64,15 @@ router.post('/login', async (req, res) => {
     }
     const usuario = await Usuario.findOne({ email: email });
     if (!usuario)
-      return res.status(400).json({ msg: "la cuenta no existe" });
+        errors.push('la cuenta no existe');
     const isMatch = await bcrypt.compare(password, usuario.password);
     if (!isMatch) 
-        return res.status(400).json({ msg: "la contraseña es incorrecta" });
+        errors.push('la contraseña es incorrecta');
+    if(errors.length>0){
+        return res.status(400).json({ errors });
+    }
     const token = jwt.sign({ id: usuario._id }, process.env.JWT_SECRET);
+    
     res.json({token,usuario: {id: usuario._id,nombre: usuario.nombre}});
 });
 router.post("/token", async (req, res) => {
