@@ -5,68 +5,11 @@ const jwt = require("jsonwebtoken");
 
 const authenticated = require('../middlewares/authenticated')
 const Producto = require('../models/producto');
+const Categoria = require('../models/categoria');
 const Usuario = require('../models/usuario');
 const validator = require('validator');
 
-router.get('/productos',authenticated, async (req, res) => {
-    const nombre = req.query.nombre || '';
-    const productos = await Producto.find({"creador":req.usuario, "nombre": {$regex: ".*" + nombre + ".*"}})
-    res.json(productos);
-});
-
-router.post('/productos',authenticated, async (req, res) => {
-    const { nombre, precio, stock,usuario } = req.body;
-    const producto = new Producto({nombre, precio, stock,creador:req.usuario});
-    await producto.save(function(err, resp) {
-        if (err) return res.status(500).json(err);
-        res.json({status: 'guardado'});
-    });
-});
-router.get('/productos/:id',authenticated, async (req, res) => {
-    try {
-        const producto = await Producto.findById(req.params.id);
-        if(producto==null){
-            return res.status(404).json('no encontrado');
-        }
-        if(req.usuario==producto.creador._id){
-            res.json(producto);
-        }else{
-            return res.status(500).json('no autorizado');
-        }
-    } catch (error) {
-        return res.status(404).json('no encontrado');
-    }
-});
-router.put('/productos/:id',authenticated, async (req, res) => {
-    try {
-        const producto = await Producto.findById(req.params.id);
-        if(producto==null){
-            return res.status(404).json('no encontrado');
-        }
-        if(req.usuario==producto.creador._id){
-            //return res.json(producto);
-        }else{
-            return res.status(500).json('no autorizado');
-        }
-    } catch (error) {
-        return res.status(404).json('no encontrado');
-    }
-    const newProducto = { nombre, precio, stock } = req.body;
-    await Producto.findByIdAndUpdate(req.params.id, newProducto, {runValidators: true},function(err, resp) {
-        if (err) return res.status(500).json(err);
-        return res.json({status: 'editado'});
-    }).catch((err)=>{
-        res.status(500).json(err);
-    })
-});
-router.delete('/productos/:id', async (req, res) => {
-    await Producto.findByIdAndDelete(req.params.id,function(err, user) {
-        if (err) return res.status(500).json(err);
-        res.json({status: 'borrado'});
-    }).catch((error)=>{
-    })
-});
-
+//auth
 router.post('/register', async (req, res) => {
     const { email, password, passwordCheck, nombre } = req.body;
     const errors = new Array();
@@ -98,7 +41,6 @@ router.post('/register', async (req, res) => {
         res.json({status: 'registrado'});
     });
 });
-
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     const errors = new Array();
@@ -137,6 +79,123 @@ router.post("/token", async (req, res) => {
         id: usuario._id,
       });
 });
+//productos
+router.get('/productos',authenticated, async (req, res) => {
+    const nombre = req.query.nombre || '';
+    const productos = await Producto.find({"creador":req.usuario, "nombre": {$regex: ".*" + nombre + ".*"}})
+    res.json(productos);
+});
 
+router.post('/productos',authenticated, async (req, res) => {
+    const { nombre, precio, stock,categoria } = req.body;
+    const producto = new Producto({nombre, precio, stock,creador:req.usuario,categoria});
+    await producto.save(function(err, resp) {
+        if (err) return res.status(500).json(err);
+        res.json({status: 'guardado'});
+    });
+});
+router.get('/productos/:id',authenticated, async (req, res) => {
+    try {
+        const producto = await Producto.findById(req.params.id);
+        if(producto==null){
+            return res.status(404).json('no encontrado');
+        }
+        if(req.usuario==producto.creador._id){
+            res.json(producto);
+        }else{
+            return res.status(500).json('no autorizado');
+        }
+    } catch (error) {
+        return res.status(404).json('no encontrado');
+    }
+});
+router.put('/productos/:id',authenticated, async (req, res) => {
+    try {
+        const producto = await Producto.findById(req.params.id);
+        if(producto==null){
+            return res.status(404).json('no encontrado');
+        }
+        if(req.usuario==producto.creador._id){
+            //return res.json(producto);
+        }else{
+            return res.status(500).json('no autorizado');
+        }
+    } catch (error) {
+        return res.status(404).json('no encontrado');
+    }
+    const newProducto = { nombre, precio, stock,categoria} = req.body;
+    await Producto.findByIdAndUpdate(req.params.id, newProducto, {runValidators: true},function(err, resp) {
+        if (err) return res.status(500).json(err);
+        return res.json({status: 'editado'});
+    }).catch((err)=>{
+        res.status(500).json(err);
+    })
+});
+router.delete('/productos/:id', async (req, res) => {
+    await Producto.findByIdAndDelete(req.params.id,function(err, user) {
+        if (err) return res.status(500).json(err);
+        res.json({status: 'borrado'});
+    }).catch((error)=>{
+    })
+});
 
+//
+
+//categorias
+router.get('/categorias',authenticated, async (req, res) => {
+    const nombre = req.query.nombre || '';
+    const categoria = await Categoria.find({"creador":req.usuario, "nombre": {$regex: ".*" + nombre + ".*"}})
+    res.json(categoria);
+});
+
+router.post('/categorias',authenticated, async (req, res) => {
+    const { nombre, descripcion} = req.body;
+    const categoria = new Categoria({nombre,descripcion,creador:req.usuario});
+    await categoria.save(function(err, resp) {
+        if (err) return res.status(500).json(err);
+        res.json({status: 'guardado'});
+    });
+});
+router.get('/categorias/:id',authenticated, async (req, res) => {
+    try {
+        const categoria = await Categoria.findById(req.params.id);
+        if(categoria==null){
+            return res.status(404).json('no encontrado');
+        }
+        if(req.usuario==categoria.creador._id){
+            res.json(categoria);
+        }else{
+            return res.status(500).json('no autorizado');
+        }
+    } catch (error) {
+        return res.status(404).json('no encontrado');
+    }
+});
+router.put('/categorias/:id',authenticated, async (req, res) => {
+    try {
+        const categoria = await Categoria.findById(req.params.id);
+        if(categoria==null){
+            return res.status(404).json('no encontrada');
+        }
+        if(req.usuario!=categoria.creador._id){
+            return res.status(500).json('no autorizado');
+        }
+    } catch (error) {
+        return res.status(404).json('no encontrada2');
+    }
+    const newCategoria = { nombre, descripcion } = req.body;
+    await Categoria.findByIdAndUpdate(req.params.id, newCategoria, {runValidators: true},function(err, resp) {
+        if (err) return res.status(500).json(err);
+        return res.json({status: 'editado'});
+    }).catch((err)=>{
+        res.status(500).json(err);
+    })
+});
+router.delete('/categorias/:id', async (req, res) => {
+    await Categoria.findByIdAndDelete(req.params.id,function(err, user) {
+        if (err) return res.status(500).json(err);
+        res.json({status: 'borrado'});
+    }).catch((error)=>{
+    })
+});
 module.exports = router;

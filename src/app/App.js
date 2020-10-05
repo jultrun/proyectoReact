@@ -15,6 +15,8 @@ import Axios from 'axios';
 import Login from './components/login';
 import Register from './components/register';
 import context from './context';
+import CrearCategoria from './components/crearCategoria';
+import EditarCategoria from './components/editarCategoria';
 
 class App extends Component {
   state = {
@@ -39,8 +41,10 @@ class App extends Component {
                 exact={true}
                 component={Home}
               />
-              <PrivateRoute path="/crear" component={CrearProducto}/>
-              <PrivateRoute path="/editar/:id" component={EditarProducto}/>
+              <PrivateRoute path="/producto/crear" component={CrearProducto}/>
+              <PrivateRoute path="/producto/editar/:id" component={EditarProducto}/>
+              <PrivateRoute path="/categoria/crear" component={CrearCategoria}/>
+              <PrivateRoute path="/categoria/editar/:id" component={EditarCategoria}/>
               <Route path="/login">
                 <Login />
               </Route>

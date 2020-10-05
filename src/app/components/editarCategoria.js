@@ -3,42 +3,29 @@ import axios from 'axios';
 import { Redirect, useParams } from "react-router-dom";
 import { withRouter } from "react-router";
 
-class EditarProducto extends Component {
+class EditarCategoria extends Component {
      componentDidMount(){
         if(this.props.match.params.id){
-            const res = axios.get(`/api/productos/${this.props.match.params.id}`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } });
+            const res = axios.get(`/api/categorias/${this.props.match.params.id}`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } });
             res.then(function (response) {
                 this.setState({
                     id: response.data._id,
                     nombre: response.data.nombre,
-                    precio: response.data.precio,
-                    categoria: response.data.categoria
+                    descripcion: response.data.descripcion,
                 });
               }.bind(this))
               .catch(function (error) {
                 this.setState({ redirect: "../" });
               }.bind(this));
-
-              const resc = axios.get(`/api/categorias`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } });
-        resc.then(function (response) {
-            this.setState({
-                categorias: response.data,
-            });
-        }.bind(this))
-        .catch(function (error) {
-        }
-        );
         }
     }
     constructor() {
         super();
-       
         this.state = {
             redirect: null,
             nombre : '',
-            precio : '',
-            categoria : null,
-            categorias:[]
+            descripcion : '',
+            id: ''
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -46,11 +33,10 @@ class EditarProducto extends Component {
       }
     onSubmit (e)  {
         e.preventDefault();
-        axios.put(`/api/productos/${this.state.id}`, {
+        console.log(this.state.id)
+        axios.put(`/api/categorias/${this.state.id}`, {
             nombre: this.state.nombre,
-            precio: this.state.precio,
-            stock:0,
-            categoria: this.state.categoria
+            descripcion: this.state.descripcion,
         },{ headers: { "auth-token":  localStorage.getItem("auth-token")  } }
         ).then(()=>{
             this.setState({ redirect: "/" });
@@ -72,32 +58,18 @@ class EditarProducto extends Component {
         return (
             <form onSubmit={this.onSubmit}>
             
-                <h3>Editar producto</h3>
+                <h3>Editar categoria</h3>
                 <div className="form-group">
                     <label>Nombre</label>
                     <input type="text" value={this.state.nombre} onChange={this.onChange} className="form-control" name="nombre" placeholder="ingrese el nombre del producto"></input>
                 </div>
                 <div className="form-group">
-                    <label>precio</label>
-                    <input type="number" value={this.state.precio} onChange={this.onChange} className="form-control" name="precio" placeholder="ingrese el precio del producto"></input>
-                </div>
-                <div className="form-group">
-                    <label>Categoria</label>
-                    <select value={this.state.categoria||''} onChange={this.onChange} name="categoria" className="form-control">
-                        <option value="">Seleccione la categoría</option>
-                        {
-                        this.state.categorias.map(categoria => {
-                            return(
-                                <option key={categoria._id} value={categoria._id}>{categoria.nombre}</option>
-                            )
-                        })
-                        }
-                        
-                    </select>
+                    <label>Descripción</label>
+                    <input type="text" value={this.state.descripcion} onChange={this.onChange} className="form-control" name="precio" placeholder="ingrese el precio del producto"></input>
                 </div>
                 <button type="submit">Editar</button> 
             </form>
         )
      }
 }
-export default withRouter(EditarProducto);
+export default withRouter(EditarCategoria);
