@@ -5,9 +5,8 @@ import { withRouter } from "react-router";
 
 class EditarProducto extends Component {
      componentDidMount(){
-       
         if(this.props.match.params.id){
-            const res = axios.get(`/api/productos/${this.props.match.params.id}`);
+            const res = axios.get(`/api/productos/${this.props.match.params.id}`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } });
             res.then(function (response) {
                 this.setState({
                     id: response.data._id,
@@ -16,12 +15,8 @@ class EditarProducto extends Component {
                 });
               }.bind(this))
               .catch(function (error) {
-                // handle error
-                console.log(error);
-              })
-              .then(function () {
-                // always executed
-              });
+                this.setState({ redirect: "../" });
+              }.bind(this));
         }
     }
     constructor() {
@@ -43,7 +38,8 @@ class EditarProducto extends Component {
             nombre: this.state.nombre,
             precio: this.state.precio,
             stock:0
-        }).then(()=>{
+        },{ headers: { "auth-token":  localStorage.getItem("auth-token")  } }
+        ).then(()=>{
             this.setState({ redirect: "/" });
         }).catch((error)=>{
         })

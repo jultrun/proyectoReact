@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
-
+import context from '../context';
 export default class CrearProducto extends Component {
+    static contextType = context;
     constructor() {
         super();
+        
         this.state = {
             redirect: null,
             nombre : '',
@@ -18,8 +20,10 @@ export default class CrearProducto extends Component {
         axios.post('/api/productos', {
             nombre: this.state.nombre,
             precio: this.state.precio,
-            stock:0
-        }).then(()=>{
+            stock:0,
+            creador:this.context.usuario.id,
+        },
+        { headers: { "auth-token":  localStorage.getItem("auth-token")  } }).then(()=>{
             this.setState({ redirect: "/" });
         }).catch((error)=>{
         })

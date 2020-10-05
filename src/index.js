@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
+
+require("dotenv").config();
 //base de datos
 const { mongoose } = require('./dataBase');
 //puerto
@@ -19,4 +21,4 @@ app.get('*', function response(req, res) {
 //server
 app.listen(app.get('port'), () => {
     console.log(`Server on http://localhost:${app.get('port')}`);
-  });
+});

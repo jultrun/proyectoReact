@@ -1,24 +1,40 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import Axios from 'axios';
+import context from '../context';
 class Home extends Component {
+  static contextType = context;
+  productos = [];
   constructor() {
     super();
     this.state = {
-      productos : []
+      productos : [],
+      user:{
+        token: undefined,
+        user: undefined
+      }
     }
+    this.search = this.search.bind(this);
+    this.getProductos = this.getProductos.bind(this);
     
   }
   componentDidMount() {
     document.title = "Productos"
     this.getProductos();
   }
+  search(e){
+    const {value} = e.target;
+    this.getProductos(value)
+  }
+  delete(id){
+    console.log(id)
+  }
 
-  getProductos() {
-    fetch('/api/productos')
-      .then(res => res.json())
-      .then(data => {
-        this.setState({productos: data});
-        console.log(this.state.productos  );
+  getProductos(nombre='') {
+    Axios.get(`/api/productos?nombre=${nombre}`, { headers: { "auth-token": localStorage.getItem("auth-token")} })
+      .then(res => {
+        this.state.productos=res.data;
+        this.setState({productos: res.data});
       });
   }
  
@@ -26,12 +42,16 @@ class Home extends Component {
     return (
       <div>
       <Link className="btn btn-primary" to="/crear">Crear producto</Link>
+      <div>
+      <label>Nombre</label>
+        <input type="text" onChange={this.search}  placeholder="ingrese el nombre del producto"></input>
+        </div>
         <table className="table">
           <thead>
             <tr>
               <th>Nombre</th>
               <th>precio</th>
-              <th>stock</th>
+              <th>en stock</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -51,6 +71,7 @@ class Home extends Component {
                     </td>
                     <td>
                     <Link to={`/editar/${producto._id}`}>Editar</Link>
+                    <button onClick={() => this.delete(producto._id)} className="btn btn-danger">borrar</button>
                     </td>
                   </tr>
                 )
