@@ -94,7 +94,18 @@ router.post("/token", async (req, res) => {
 router.get('/productos',authenticated, async (req, res) => {
     const nombre = req.query.nombre || '';
     const productos = await Producto.find({"creador":req.usuario, "nombre": {$regex: ".*" + nombre + ".*"}})
-    res.json(productos);
+    const response = [];
+    productos.map(producto => {
+        response.push(
+            {
+                nombre : producto.nombre,
+                precio : producto.precio,
+                stock : producto.stock,
+                categoria : producto.populate('categoria').nombre
+            }
+        )
+    });
+    res.json(response);
 });
 
 router.post('/productos',authenticated, async (req, res) => {

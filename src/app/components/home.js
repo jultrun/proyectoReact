@@ -84,6 +84,7 @@ class Home extends Component {
                   <th>Nombre</th>
                   <th>Precio</th>
                   <th>Cantidad en stock</th>
+                  <th>Categoría</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -100,6 +101,9 @@ class Home extends Component {
                         </td>
                         <td>
                           {producto.stock}
+                        </td>
+                        <td>
+                          {producto.categoria}
                         </td>
                         <td>
                         <Link to={`/producto/editar/${producto._id}`}>Editar</Link>
