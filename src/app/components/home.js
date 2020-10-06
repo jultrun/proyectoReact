@@ -37,16 +37,21 @@ class Home extends Component {
     this.getCategorias(value)
   }
   deleteProducto(id){
-    Axios.delete(`/api/productos/${id}`, { headers: { "auth-token": localStorage.getItem("auth-token")} })
+    if(confirm('Desea borrar el producto?')) {
+      Axios.delete(`/api/productos/${id}`, { headers: { "auth-token": localStorage.getItem("auth-token")} })
       .then(function(res){
         this.getProductos();
       }.bind(this));
+    }
+    
   }
   deleteCategoria(id){
-    Axios.delete(`/api/categorias/${id}`, { headers: { "auth-token": localStorage.getItem("auth-token")} })
-    .then(function(res){
-      this.getCategorias();
-    }.bind(this));
+    if(confirm('Desea borrar la categoría?')) {
+      Axios.delete(`/api/categorias/${id}`, { headers: { "auth-token": localStorage.getItem("auth-token")} })
+      .then(function(res){
+        this.getCategorias();
+      }.bind(this));
+    }
   }
 
   getProductos(nombre='') {
