@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect, useParams } from "react-router-dom";
 import { withRouter } from "react-router";
+import context from '../context';
 
 class EditarCategoria extends Component {
+    static contextType = context;
     componentDidMount(){
         this.context.updateValue('title','Editar categoría');
         if(this.props.match.params.id){

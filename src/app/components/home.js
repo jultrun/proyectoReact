@@ -110,10 +110,10 @@ class Home extends Component {
                           {producto.categoria}
                         </td>
                         <td>
-                          <Link to={`/producto/editar/${producto._id}`}>
+                          <Link to={`/producto/editar/${producto._id}`} title="Editar">
                             <FontAwesomeIcon icon={faPencilAlt} />
-                          </Link>
-                          <FontAwesomeIcon className="text-danger" onClick={() => this.deleteProducto(producto._id)} icon={faTrashAlt} />
+                          </Link>&nbsp;&nbsp; 
+                          <FontAwesomeIcon className="text-danger" title="Borrar" onClick={() => this.deleteProducto(producto._id)} icon={faTrashAlt} />
                         </td>
                       </tr>
                     )
