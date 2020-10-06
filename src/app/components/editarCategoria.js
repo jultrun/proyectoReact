@@ -5,6 +5,7 @@ import { withRouter } from "react-router";
 
 class EditarCategoria extends Component {
     componentDidMount(){
+        this.context.updateValue('title','Editar categoría');
         if(this.props.match.params.id){
             const res = axios.get(`/api/categorias/${this.props.match.params.id}`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } });
             res.then(function (response) {

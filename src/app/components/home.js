@@ -9,7 +9,6 @@ class Home extends Component {
   productos = [];
   constructor() {
     super();
-    document.title = "Inicio"
     this.state = {
       productos : [],
       categorias: [],
@@ -25,6 +24,7 @@ class Home extends Component {
     
   }
   componentDidMount() {
+    this.context.updateValue('title','Inicio');
     this.getProductos();
     this.getCategorias();
   }

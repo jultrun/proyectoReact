@@ -20,7 +20,7 @@ export default class CrearProducto extends Component {
         this.onChange = this.onChange.bind(this);
     }
     componentDidMount(){
-        //document.title = "Crear categorías";
+        this.context.updateValue('title','Crear producto');
         const res = axios.get(`/api/categorias`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } });
         res.then(function (response) {
             this.setState({

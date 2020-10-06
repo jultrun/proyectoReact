@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect, useParams } from "react-router-dom";
 import { withRouter } from "react-router";
+import context from '../context';
 
 class EditarProducto extends Component {
+    static contextType = context;
     componentDidMount(){
         if(this.props.match.params.id){
+            this.context.updateValue('title','Editar producto');
             const res = axios.get(`/api/productos/${this.props.match.params.id}`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } });
             res.then(function (response) {
                 this.setState({
@@ -21,7 +24,7 @@ class EditarProducto extends Component {
                 this.setState({ redirect: "../" });
               }.bind(this));
             axios.get(`/api/categorias`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } })
-            then(function (response) {
+            .then(function (response) {
                 this.setState({
                     categorias: response.data,
                 });

@@ -18,6 +18,9 @@ class Register extends Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
     }
+    componentDidMount(){
+        this.context.updateValue('title','Registro');
+    }
     onSubmit(e) {
         e.preventDefault();
         axios.post(`/api/register`, {
@@ -41,7 +44,6 @@ class Register extends Component {
         })
     }
     render() {
-
         if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />
         }

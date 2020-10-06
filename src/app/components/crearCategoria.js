@@ -15,6 +15,9 @@ export default class CrearCategoria extends Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
     }
+    componentDidMount(){
+        this.context.updateValue('title','Crear Categoría');
+    }
     onSubmit (e)  {
         e.preventDefault();
         axios.post('/api/categorias', {

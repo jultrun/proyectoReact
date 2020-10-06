@@ -17,11 +17,15 @@ import PrivateRoute from './components/privateRoute';
 
 class App extends Component {
   state = {
+    title : '',
     isLoggedIn : false,
     usuario : {
       token: undefined,
       nombre: undefined,
     }
+  }
+  componentDidUpdate(){
+    document.title = this.state.title;
   }
   updateValue = (key, val) => {
     this.setState({[key]: val});
