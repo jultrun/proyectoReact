@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const URI = 'mongodb://localhost/proyectoreact';
+const URI = process.env.MONGO_URL
 
 
 mongoose.connect(URI, {useUnifiedTopology: true,useNewUrlParser:true,useFindAndModify: false,useCreateIndex: true,})

@@ -36,6 +36,7 @@ class App extends Component {
           <div className="container-fluid">
             <Nav exact path='/'/>
             {/*rutas*/}
+            <main className="col p-3">
             <Switch>
               <PrivateRoute path="/"
                 exact={true}
@@ -52,6 +53,7 @@ class App extends Component {
                 <Register />
               </Route>
             </Switch>
+            </main>
           </div>
         </context.Provider>
       </Router>

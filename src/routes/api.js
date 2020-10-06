@@ -98,7 +98,7 @@ router.get('/productos',authenticated, async (req, res) => {
 });
 
 router.post('/productos',authenticated, async (req, res) => {
-    const { nombre, precio, stock,categoria } = req.body;
+    const { nombre, precio, stock,categoria,descripcion } = req.body;
     const errors= new Array();
     if(!nombre){
         errors.push('el nombre es obligatorio');
@@ -114,6 +114,9 @@ router.post('/productos',authenticated, async (req, res) => {
         if(!validator.isNumeric(stock)){
             errors.push('la cantidad en stock debe ser numérica');
         }
+    }
+    if(!descripcion){
+        errors.push('la descripcion es obligatoria');
     }
     if(errors.length>0){
         return res.status(400).json({ errors });
@@ -153,7 +156,7 @@ router.put('/productos/:id',authenticated, async (req, res) => {
     } catch (error) {
         return res.status(404).json('no encontrado');
     }
-    const newProducto = { nombre, precio, stock,categoria} = req.body;
+    const newProducto = { nombre, precio, stock,categoria,descripcion} = req.body;
     const errors= new Array();
     if(!nombre){
         errors.push('el nombre es obligatorio');
@@ -169,6 +172,9 @@ router.put('/productos/:id',authenticated, async (req, res) => {
         if(!validator.isNumeric(stock)){
             errors.push('la cantidad en stock debe ser numérica');
         }
+    }
+    if(!descripcion){
+        errors.push('la descripcion es obligatoria');
     }
     if(errors.length>0){
         return res.status(400).json({ errors });

@@ -11,6 +11,7 @@ export default class CrearProducto extends Component {
             nombre : '',
             precio : '',
             stock : '',
+            descripcion: '',
             categoria : null,
             categorias:[],
             errors:[]
@@ -34,6 +35,7 @@ export default class CrearProducto extends Component {
             nombre: this.state.nombre,
             precio: this.state.precio,
             stock: this.state.stock,
+            descripcion:this.state.descripcion,
             categoria:this.state.categoria,
         },
         { headers: { "auth-token":  localStorage.getItem("auth-token")  } }).then(()=>{
@@ -78,6 +80,10 @@ export default class CrearProducto extends Component {
                 <div className="form-group">
                     <label>Precio</label>
                     <input type="number" onChange={this.onChange} className="form-control" name="precio" placeholder="ingrese el precio del producto"></input>
+                </div>
+                <div className="form-group">
+                    <label>Descripción</label>
+                    <input type="text" onChange={this.onChange} className="form-control" name="descripcion" placeholder="ingrese la descripción del producto"></input>
                 </div>
                 <div className="form-group">
                     <label>Cantidad en stock</label>

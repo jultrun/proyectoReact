@@ -13,6 +13,7 @@ class EditarProducto extends Component {
                     nombre: response.data.nombre,
                     precio: response.data.precio,
                     stock: response.data.stock,
+                    descripcion: response.data.descripcion,
                     categoria: response.data.categoria
                 });
               }.bind(this))
@@ -36,6 +37,7 @@ class EditarProducto extends Component {
             nombre : '',
             precio : '',
             stock: '',
+            descripcion: '',
             categoria : null,
             categorias:[],
             errors:[]
@@ -50,6 +52,7 @@ class EditarProducto extends Component {
             nombre: this.state.nombre,
             precio: this.state.precio,
             stock: this.state.stock,
+            descripcion: this.state.descripcion,
             categoria: this.state.categoria
         },{ headers: { "auth-token":  localStorage.getItem("auth-token")  } }
         ).then(()=>{
@@ -98,6 +101,10 @@ class EditarProducto extends Component {
                 <div className="form-group">
                     <label>Cantidad en stock</label>
                     <input type="number" value={this.state.stock} onChange={this.onChange} className="form-control" name="stock" placeholder="ingrese la cantidad de producto en stock"></input>
+                </div>
+                <div className="form-group">
+                    <label>Descripción</label>
+                    <input type="text" value={this.state.descripcion} onChange={this.onChange} className="form-control" name="descripcion" placeholder="ingrese la descripción del producto"></input>
                 </div>
                 <div className="form-group">
                     <label>Categoria</label>
