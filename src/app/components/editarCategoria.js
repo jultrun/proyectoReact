@@ -37,8 +37,7 @@ class EditarCategoria extends Component {
       }
     onSubmit (e)  {
         e.preventDefault();
-        console.log(this.state.id)
-        axios.put(`/api/categorias/${this.state.id}`, {
+        axios.put(`/api/categoriass/${this.state.id}`, {
             nombre: this.state.nombre,
             descripcion: this.state.descripcion,
         },{ headers: { "auth-token":  localStorage.getItem("auth-token")  } }
