@@ -18,8 +18,9 @@ export default class CrearProducto extends Component {
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
-      }
-      componentDidMount(){
+    }
+    componentDidMount(){
+        //document.title = "Crear categorías";
         const res = axios.get(`/api/categorias`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } });
         res.then(function (response) {
             this.setState({
@@ -28,7 +29,7 @@ export default class CrearProducto extends Component {
         }.bind(this))
         .catch(function (error) {}
         );
-}
+    }
     onSubmit (e)  {
         e.preventDefault();
         axios.post('/api/productos', {
@@ -44,14 +45,13 @@ export default class CrearProducto extends Component {
             this.setState({
                 errors: error.response.data.errors,
             });
-        })
-        
+        });
     }
     onChange (e) {
         const {name,value} = e.target;
         this.setState({
             [name]:value
-        })
+        });
     }
     render() {
         if (this.state.redirect) {
@@ -90,7 +90,7 @@ export default class CrearProducto extends Component {
                     <input type="number" onChange={this.onChange} className="form-control" name="stock" placeholder="ingrese la cantidad de producto en stock"></input>
                 </div>
                 <div className="form-group">
-                    <label>Categoria</label>
+                    <label>Categoría</label>
                     <select onChange={this.onChange} name="categoria" className="form-control">
                         <option value="">Seleccione la categoría</option>
                         {
@@ -102,8 +102,8 @@ export default class CrearProducto extends Component {
                         }
                     </select>
                 </div>
-                <button type="submit">Crear</button> 
+                <button className="btn btn-primary" type="submit">Crear</button> 
             </form>
-        )
+        );
      }
 }

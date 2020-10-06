@@ -4,7 +4,7 @@ import { Redirect, useParams } from "react-router-dom";
 import { withRouter } from "react-router";
 
 class EditarProducto extends Component {
-     componentDidMount(){
+    componentDidMount(){
         if(this.props.match.params.id){
             const res = axios.get(`/api/productos/${this.props.match.params.id}`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } });
             res.then(function (response) {
@@ -20,8 +20,8 @@ class EditarProducto extends Component {
               .catch(function (error) {
                 this.setState({ redirect: "../" });
               }.bind(this));
-            const resc = axios.get(`/api/categorias`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } });
-            resc.then(function (response) {
+            axios.get(`/api/categorias`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } })
+            then(function (response) {
                 this.setState({
                     categorias: response.data,
                 });
@@ -70,7 +70,6 @@ class EditarProducto extends Component {
         });
     }
     render() {
-        
         if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />
         }
@@ -122,7 +121,7 @@ class EditarProducto extends Component {
                 </div>
                 <button type="submit">Editar</button> 
             </form>
-        )
-     }
+        );
+    }
 }
 export default withRouter(EditarProducto);

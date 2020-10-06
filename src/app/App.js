@@ -2,13 +2,11 @@ import React, { Component  } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Redirect} from "react-router-dom";
+  Route} from "react-router-dom";
 
 import Home from "./components/home";
 import CrearProducto from './components/crearProducto';
 import EditarProducto from './components/editarProducto';
-import Axios from 'axios';
 import Login from './components/login';
 import Register from './components/register';
 import context from './context';

@@ -4,7 +4,7 @@ import { Redirect, useParams } from "react-router-dom";
 import { withRouter } from "react-router";
 
 class EditarCategoria extends Component {
-     componentDidMount(){
+    componentDidMount(){
         if(this.props.match.params.id){
             const res = axios.get(`/api/categorias/${this.props.match.params.id}`,{ headers: { "auth-token":  localStorage.getItem("auth-token")  } });
             res.then(function (response) {
@@ -13,10 +13,10 @@ class EditarCategoria extends Component {
                     nombre: response.data.nombre,
                     descripcion: response.data.descripcion,
                 });
-              }.bind(this))
-              .catch(function (error) {
-                this.setState({ redirect: "../" });
-              }.bind(this));
+            }.bind(this))
+            .catch(function (error) {
+            this.setState({ redirect: "../" });
+            }.bind(this));
         }
     }
     constructor() {
@@ -81,9 +81,9 @@ class EditarCategoria extends Component {
                     <label>Descripción</label>
                     <input type="text" value={this.state.descripcion} onChange={this.onChange} className="form-control" name="precio" placeholder="ingrese el precio del producto"></input>
                 </div>
-                <button type="submit">Editar</button> 
+                <button className="btn btn-primary" type="submit">Editar</button> 
             </form>
-        )
-     }
+        );
+    }
 }
 export default withRouter(EditarCategoria);

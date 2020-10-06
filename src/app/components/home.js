@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import Axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import context from '../context';
 class Home extends Component {
   static contextType = context;
   productos = [];
   constructor() {
     super();
+    document.title = "Inicio"
     this.state = {
       productos : [],
       categorias: [],
@@ -24,7 +25,6 @@ class Home extends Component {
     
   }
   componentDidMount() {
-    document.title = "Inicio"
     this.getProductos();
     this.getCategorias();
   }
@@ -44,24 +44,23 @@ class Home extends Component {
   }
   deleteCategoria(id){
     Axios.delete(`/api/categorias/${id}`, { headers: { "auth-token": localStorage.getItem("auth-token")} })
-      .then(function(res){
-        this.getCategorias();
-      }.bind(this));
+    .then(function(res){
+      this.getCategorias();
+    }.bind(this));
   }
 
   getProductos(nombre='') {
     Axios.get(`/api/productos?nombre=${nombre}`, { headers: { "auth-token": localStorage.getItem("auth-token")} })
-      .then(res => {
-        this.setState({productos: res.data});
-      });
+    .then(res => {
+      this.setState({productos: res.data});
+    });
   }
   getCategorias(nombre='') {
     Axios.get(`/api/categorias?nombre=${nombre}`, { headers: { "auth-token": localStorage.getItem("auth-token")} })
-      .then(res => {
-        this.setState({categorias: res.data});
-      });
+    .then(res => {
+      this.setState({categorias: res.data});
+    });
   }
- 
   render() {
     return(
       <div>
@@ -126,7 +125,6 @@ class Home extends Component {
           <div className="tab-pane fade" id="categorias">
             <div className="row">
               <div className="col-6">
-             
                 <Link className="btn btn-primary" to="/categoria/crear">Crear categoría</Link>
               </div>
               <div className="col-4">

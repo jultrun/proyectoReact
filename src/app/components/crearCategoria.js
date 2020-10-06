@@ -14,12 +14,12 @@ export default class CrearCategoria extends Component {
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
-      }
+    }
     onSubmit (e)  {
         e.preventDefault();
         axios.post('/api/categorias', {
             nombre: this.state.nombre,
-            descripcion: this.state.precio
+            descripcion: this.state.descripcion
         },
         { headers: { "auth-token":  localStorage.getItem("auth-token")  } }).then(()=>{
             this.setState({ redirect: "/" });
@@ -33,7 +33,7 @@ export default class CrearCategoria extends Component {
         const {name,value} = e.target;
         this.setState({
             [name]:value
-        })
+        });
     }
     render() {
         if (this.state.redirect) {
@@ -60,11 +60,11 @@ export default class CrearCategoria extends Component {
                     <input type="text" onChange={this.onChange} className="form-control" name="nombre" placeholder="ingrese el nombre del producto"></input>
                 </div>
                 <div className="form-group">
-                    <label>descripcion</label>
-                    <input type="text" onChange={this.onChange} className="form-control" name="precio" placeholder="ingrese el precio del producto"></input>
+                    <label>Descripción</label>
+                    <input type="text" onChange={this.onChange} className="form-control" name="descripcion" placeholder="ingrese el precio del producto"></input>
                 </div>
-                <button type="submit">Crear</button> 
+                <button className="btn btn-primary" type="submit">Crear</button> 
             </form>
-        )
-     }
+        );
+    }
 }
