@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import Axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import context from '../context';
 class Home extends Component {
   static contextType = context;
@@ -73,10 +75,13 @@ class Home extends Component {
         </ul>
         <div className="tab-content">
           <div className="tab-pane active" id="productos">
-            <Link className="btn btn-primary" to="/producto/crear">Crear producto</Link>
-            <div>
-              <label>Nombre</label>
-              <input type="text" onChange={this.searchProductos}  placeholder="ingrese el nombre del producto"></input>
+            <div className="row">
+              <div className="col-6">
+                <Link className="btn btn-primary" to="/producto/crear">Crear producto</Link>
+              </div>
+              <div className="col-4">
+                <input type="text" onChange={this.searchProductos}  placeholder="ingrese el nombre del producto" className="form-control mr-sm-2"></input>
+              </div>
             </div>
             <table className="table">
               <thead>
@@ -106,8 +111,10 @@ class Home extends Component {
                           {producto.categoria}
                         </td>
                         <td>
-                        <Link to={`/producto/editar/${producto._id}`}>Editar</Link>
-                        <button onClick={() => this.deleteProducto(producto._id)} className="btn btn-danger">borrar</button>
+                          <Link to={`/producto/editar/${producto._id}`}>
+                            <FontAwesomeIcon icon={faPencilAlt} />
+                          </Link>
+                          <FontAwesomeIcon className="text-danger" onClick={() => this.deleteProducto(producto._id)} icon={faTrashAlt} />
                         </td>
                       </tr>
                     )
@@ -117,10 +124,14 @@ class Home extends Component {
             </table>
           </div>
           <div className="tab-pane fade" id="categorias">
-            <Link className="btn btn-primary" to="/categoria/crear">Crear categoría</Link>
-            <div>
-              <label>Nombre</label>
-              <input type="text" onChange={this.searchCategorias}  placeholder="ingrese el nombre de la categoría"></input>
+            <div className="row">
+              <div className="col-6">
+             
+                <Link className="btn btn-primary" to="/categoria/crear">Crear categoría</Link>
+              </div>
+              <div className="col-4">
+                <input type="text" onChange={this.searchCategorias}  placeholder="ingrese el nombre de la categoría" className="form-control mr-sm-2"></input>
+              </div>
             </div>
             <table className="table">
               <thead>
@@ -142,8 +153,10 @@ class Home extends Component {
                           {categoria.descripcion}
                         </td>
                         <td>
-                          <Link to={`/categoria/editar/${categoria._id}`}>Editar</Link>
-                          <button onClick={() => this.deleteCategoria(categoria._id)} className="btn btn-danger">borrar</button>
+                          <Link to={`/categoria/editar/${categoria._id}`}>
+                            <FontAwesomeIcon icon={faPencilAlt} />
+                          </Link>
+                          <FontAwesomeIcon className="text-danger" onClick={() => this.deleteCategoria(categoria._id)} icon={faTrashAlt} />
                         </td>
                       </tr>
                     )

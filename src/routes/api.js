@@ -98,6 +98,7 @@ router.get('/productos',authenticated, async (req, res) => {
     productos.map(producto => {
         response.push(
             {
+                _id: producto._id,
                 nombre : producto.nombre,
                 precio : producto.precio,
                 stock : producto.stock,
