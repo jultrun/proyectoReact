@@ -1,9 +1,9 @@
 # Construir proyecto
 Para construir el proyecto
-1. cambiar el nombre del archivo .env.example a .enn
-2. configurar las variables de entorno
-2.1 JWT_SECRET para el token jwt con una contraseña
-2.2 MONGO_URL para la url de la base de datos de mongoddb
-3. ejecutar `npm install`
-4. ejecutar `npm run wdev` para construir el proyecto en entorno de desarrollo o `npm run wprod` para entorno de production
 
+1.  Editar el archivo .env para configurar las variables de entorno
+![](https://i.imgur.com/XKXoAU2m.jpg)
+1.1  MONGO_URL para la url de conexión de la base de datos mongodb, por ejemplo mongodb://localhost/proyectoreact
+1.2 (opcional) JWT_SECRET para la clave secreta para jwt(json web token)
+3. .ejecutar el comando `npm install` para instalar los paquetes necesarios
+4. ejecutar el comando `npm run wdev` para construir el proyecto en modo desarrollo o
